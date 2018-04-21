@@ -7,6 +7,7 @@ using Microsoft.EntityFrameworkCore.Storage;
 using Microsoft.EntityFrameworkCore.Storage.Internal;
 using SamplePrintableForm.Models;
 using System;
+using SamplePrintableForm.Data;
 
 namespace SamplePrintableForm.Migrations
 {
