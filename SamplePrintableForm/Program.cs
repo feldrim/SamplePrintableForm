@@ -6,20 +6,36 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 
 namespace SamplePrintableForm
 {
-    public class Program
-    {
-        public static void Main(string[] args)
-        {
-            BuildWebHost(args).Run();
-        }
+   public static class Program
+   {
+      public static void Main(string[] args)
+      {
+         var webHost = BuildWebHost(args);
 
-        public static IWebHost BuildWebHost(string[] args) =>
-            WebHost.CreateDefaultBuilder(args)
-                .UseStartup<Startup>()
-                .Build();
-    }
+         using (var scope = webHost.Services.CreateScope())
+         {
+            var services = scope.ServiceProvider;
+            try
+            {
+               Seeder.Initialize(services);
+            }
+            catch (Exception ex)
+            {
+               Console.WriteLine(ex.Message);
+            }
+         }
+
+         webHost.Run();
+      }
+
+      public static IWebHost BuildWebHost(string[] args) =>
+          WebHost.CreateDefaultBuilder(args)
+              .UseStartup<Startup>()
+              .Build();
+   }
 }
