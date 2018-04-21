@@ -49,6 +49,7 @@ namespace SamplePrintableForm
          try
          {
             _dbContext.Customer.AddRange(customers);
+            _dbContext.SaveChanges();
          }
          catch (Exception e)
          {
@@ -68,6 +69,16 @@ namespace SamplePrintableForm
          {
             offers[i].Customer = _customers[i];
             offers[i].CustomerId = _customers[i].Id;
+         }
+
+         try
+         {
+            _dbContext.Offer.AddRange(offers);
+            _dbContext.SaveChanges();
+         }
+         catch (Exception e)
+         {
+            Errors.Add(e);
          }
       }
 
