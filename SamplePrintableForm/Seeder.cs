@@ -1,11 +1,7 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using Bogus;
-using Microsoft.AspNetCore.Server.Kestrel.Internal.System.Collections.Sequences;
-using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using SamplePrintableForm.Data;
 using SamplePrintableForm.Models;
@@ -61,11 +57,11 @@ namespace SamplePrintableForm
       {
          var offers = new Faker<Offer>()
             .RuleFor(o => o.Date, f => f.Date.Past())
-            .RuleFor(o => o.Price, f => decimal.Parse(f.Commerce.Price(1750,2750)))
+            .RuleFor(o => o.Price, f => decimal.Parse(f.Commerce.Price(1750, 2750)))
             .RuleFor(o => o.Currency, Currency.Euro)
             .Generate(15);
 
-         for(var i = 0; i < offers.Count; i++)
+         for (var i = 0; i < offers.Count; i++)
          {
             offers[i].Customer = _customers[i];
             offers[i].CustomerId = _customers[i].Id;
@@ -89,10 +85,7 @@ namespace SamplePrintableForm
 
       private static void DumpErrors()
       {
-         foreach (var error in Errors)
-         {
-            Console.WriteLine(error);
-         }
+         foreach (var error in Errors) Console.WriteLine(error);
       }
    }
 }

@@ -1,14 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Builder;
+﻿using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.EntityFrameworkCore;
 using SamplePrintableForm.Data;
-using SamplePrintableForm.Models;
 
 namespace SamplePrintableForm
 {
@@ -27,7 +22,7 @@ namespace SamplePrintableForm
          services.AddMvc();
 
          services.AddDbContext<AppDbContext>(options =>
-                 options.UseSqlServer(Configuration.GetConnectionString("AppDbContext")));
+            options.UseSqlServer(Configuration.GetConnectionString("AppDbContext")));
       }
 
       // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
