@@ -2,9 +2,11 @@
 using System.Collections;
 using System.Collections.Generic;
 using Bogus;
+using Bogus.DataSets;
 using Microsoft.Extensions.DependencyInjection;
 using SamplePrintableForm.Data;
 using SamplePrintableForm.Models;
+using Currency = SamplePrintableForm.Models.Currency;
 
 namespace SamplePrintableForm
 {
@@ -19,32 +21,35 @@ namespace SamplePrintableForm
       public static void Initialize(IServiceProvider serviceProvider)
       {
          _dbContext = serviceProvider.GetRequiredService<AppDbContext>();
-         _customers = serviceProvider.GetRequiredService<List<Customer>>();
-         _offers = serviceProvider.GetRequiredService<List<Offer>>();
-
          _dbContext.Database.EnsureDeleted();
          _dbContext.Database.EnsureCreated();
 
          Errors = new ArrayList();
 
          AddCustomers();
-
+         AddOffers();
 
          DumpErrors();
       }
 
       private static void AddCustomers()
       {
-         var customers = new Faker<Customer>()
-            .RuleFor(c => c.Name, f => f.Person.FirstName)
-            .RuleFor(c => c.Surname, f => f.Person.LastName)
-            .RuleFor(c => c.Email, f => f.Person.Email)
-            .RuleFor(c => c.Phone, f => f.Person.Phone)
+         _customers = new Faker<Customer>()
+            .StrictMode(false)
+            .CustomInstantiator(c => new Customer())
+            .Ignore(c => c.Id)
+            .Rules((f, c) =>
+            {
+               c.Name = f.Name.FirstName(Name.Gender.Male);
+               c.Surname = f.Name.LastName();
+               c.Email = $"{c.Name.ToLowerInvariant()}@gmail.com";
+               c.Phone = f.Phone.PhoneNumber();
+            })
             .Generate(20);
 
          try
          {
-            _dbContext.Customer.AddRange(customers);
+            _dbContext.Customer.AddRange(_customers);
             _dbContext.SaveChanges();
          }
          catch (Exception e)
@@ -55,32 +60,27 @@ namespace SamplePrintableForm
 
       private static void AddOffers()
       {
-         var offers = new Faker<Offer>()
+         _offers = new Faker<Offer>()
             .RuleFor(o => o.Date, f => f.Date.Past())
             .RuleFor(o => o.Price, f => decimal.Parse(f.Commerce.Price(1750, 2750)))
             .RuleFor(o => o.Currency, Currency.Euro)
             .Generate(15);
 
-         for (var i = 0; i < offers.Count; i++)
+         for (var i = 0; i < _offers.Count; i++)
          {
-            offers[i].Customer = _customers[i];
-            offers[i].CustomerId = _customers[i].Id;
+            _offers[i].Customer = _customers[i];
+            _offers[i].CustomerId = _customers[i].Id;
          }
 
          try
          {
-            _dbContext.Offer.AddRange(offers);
+            _dbContext.Offer.AddRange(_offers);
             _dbContext.SaveChanges();
          }
          catch (Exception e)
          {
             Errors.Add(e);
          }
-      }
-
-      private static void AddErrors<T>(T error) where T : class
-      {
-         Errors.Add(error);
       }
 
       private static void DumpErrors()
