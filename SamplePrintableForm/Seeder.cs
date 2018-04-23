@@ -87,14 +87,14 @@ namespace SamplePrintableForm
             .RuleFor(o => o.Version, f => 1)
             .RuleFor(o => o.Date, f => f.Date.Past())
             .RuleFor(o => o.Price, f => decimal.Parse(f.Commerce.Price(1750, 2750)))
-            .Generate(20);
+            .Generate(20).ToList();
 
          for (var i = 0; i < _offers.Count; i++)
          {
             _offers[i].Customer = _customers[i];
             _offers[i].CustomerId = _customers[i].Id;
-            _offers[i].Currency = _currencies.First(c => c.Code.Equals("EUR"));
-            _offers[i].CurrencyId = _currencies.First(c => c.Code.Equals("EUR")).Id;
+            _offers[i].Currency = _currencies.First(c => c.Id == 1);
+            _offers[i].CurrencyId = 1;
          }
 
          try
