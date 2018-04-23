@@ -39,9 +39,9 @@ namespace SamplePrintableForm
       {
          _currencies = new List<Currency>
          {
-            new Currency {Name = "Euro", Code = "EUR", Symbol = '€'},
-            new Currency {Name = "US Dollar", Code = "USD", Symbol = '$'},
-            new Currency {Name = "Turkish Lira", Code = "TRY", Symbol = '₺'},
+            new Currency {Name = "Euro", Code = "EUR", Symbol = "€"},
+            new Currency {Name = "US Dollar", Code = "USD", Symbol = "$"},
+            new Currency {Name = "Turkish Lira", Code = "TRY", Symbol = "₺"},
          };
 
          try
