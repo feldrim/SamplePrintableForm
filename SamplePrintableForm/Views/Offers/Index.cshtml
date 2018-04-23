@@ -1,4 +1,4 @@
-﻿@model IEnumerable<Offer>
+﻿@model IEnumerable<SamplePrintableForm.Models.Offer>
 
 @{
     ViewData["Title"] = "Index";
@@ -7,11 +7,15 @@
 <h2>Index</h2>
 
 <p>
-    <a asp-action="Create">Create New</a>
+    <a asp-action="Create" class="btn btn-primary">Create New</a>
 </p>
 <table class="table">
     <thead>
         <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.Customer)
+            </th>
+
             <th>
                 @Html.DisplayNameFor(model => model.Date)
             </th>
@@ -22,7 +26,7 @@
                 @Html.DisplayNameFor(model => model.Currency)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.Customer)
+                @Html.DisplayNameFor(model => model.Version)
             </th>
             <th></th>
         </tr>
@@ -32,19 +36,25 @@
         {
             <tr>
                 <td>
+                    @{
+                        var fullName = $"{Html.DisplayTextFor(modelItem => item.Customer.Name)} {Html.DisplayTextFor(modelItem => item.Customer.MiddleName) ?? ""} {Html.DisplayTextFor(modelItem => item.Customer.Surname)}";
+                    }
+                    @fullName
+                </td>
+                <td>
                     @Html.DisplayFor(modelItem => item.Date)
                 </td>
                 <td>
                     @Html.DisplayFor(modelItem => item.Price)
                 </td>
                 <td>
-                    @Html.DisplayFor(modelItem => item.Currency.Name)
+                    @Html.DisplayFor(modelItem => item.Currency.Code)
                 </td>
                 <td>
-                    @Html.DisplayFor(modelItem => item.Customer.Email)
+                    @Html.DisplayFor(modelItem => item.Version)
                 </td>
                 <td>
-                    <div class="btn-group btn-group-lg" role="group" aria-label="...">
+                    <div class="btn-group btn-group-sm" role="group" aria-label="...">
                         <a class="btn btn-success" asp-action="Edit" asp-route-id="@item.Id"><i class="fas fa-edit"></i></a>
                         <a class="btn btn-primary" asp-action="Details" asp-route-id="@item.Id"><i class="fas fa-info-circle"></i></a>
                         <a class="btn btn-danger" asp-action="Delete" asp-route-id="@item.Id"><i class="far fa-trash-alt"></i></a>

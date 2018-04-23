@@ -1,4 +1,5 @@
-﻿@model Offer
+﻿@using System.Globalization
+@model SamplePrintableForm.Models.Offer
 
 @{
     ViewData["Title"] = "Details";
@@ -14,13 +15,10 @@
             @Html.DisplayNameFor(model => model.Customer.Name)
         </dt>
         <dd>
-            @Html.DisplayFor(model => model.Customer.Name)
-        </dd>
-        <dt>
-            @Html.DisplayNameFor(model => model.Customer.Surname)
-        </dt>
-        <dd>
-            @Html.DisplayFor(model => model.Customer.Surname)
+            @{
+                var fullName = $"{Html.DisplayTextFor(model => model.Customer.Name)} {Html.DisplayTextFor(model => model.Customer.MiddleName) ?? ""} {Html.DisplayTextFor(model => model.Customer.Surname)}";
+            }
+            @fullName
         </dd>
         <dt>
             @Html.DisplayNameFor(model => model.Customer.Phone)
@@ -32,13 +30,20 @@
             @Html.DisplayNameFor(model => model.Customer.Email)
         </dt>
         <dd>
-            @Html.DisplayTextFor(model => model.Customer.Email)
+            @{
+                var email = Html.DisplayTextFor(model => model.Customer.Email);
+            }
+            <a href="mailto:@email" class="no-reformat">@email</a>
         </dd>
         <dt>
-            @Html.DisplayNameFor(model => model.Date.Date)
+            @Html.DisplayNameFor(model => model.Date)
         </dt>
         <dd>
-            @Html.DisplayFor(model => model.Date)
+            @{
+                var dateString = Html.DisplayTextFor(model => model.Date);
+                var date = DateTime.Parse(dateString).ToLocalTime().ToString("D", CultureInfo.InvariantCulture);
+            }
+            @date
         </dd>
         <dt>
             @Html.DisplayNameFor(model => model.Price)
