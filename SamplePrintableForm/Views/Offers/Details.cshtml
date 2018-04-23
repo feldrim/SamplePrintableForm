@@ -31,8 +31,8 @@
         <dt>
             @Html.DisplayNameFor(model => model.Customer.Email)
         </dt>
-        <dd class="no-reformat">
-            @Html.DisplayFor(model => model.Customer.Email)
+        <dd>
+            @Html.DisplayTextFor(model => model.Customer.Email)
         </dd>
         <dt>
             @Html.DisplayNameFor(model => model.Date.Date)
@@ -44,11 +44,12 @@
             @Html.DisplayNameFor(model => model.Price)
         </dt>
         <dd>
-            @Html.DisplayFor(model => model.Price)
+            @Html.DisplayFor(model => model.Price) @Html.DisplayFor(model => model.Currency.Symbol)
         </dd>
     </dl>
 </div>
 <div class="no-print">
     <a asp-action="Edit" asp-route-id="@Model.Id">Edit</a> |
+    <a href="#" onclick="window.print()">Print</a> |
     <a asp-action="Index">Back to List</a>
 </div>
