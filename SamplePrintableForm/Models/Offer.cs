@@ -17,11 +17,4 @@ namespace SamplePrintableForm.Models
 
       [Required] public Currency Currency { get; set; }
    }
-
-   public enum Currency
-   {
-      Euro,
-      Dollar,
-      Lira
-   }
 }

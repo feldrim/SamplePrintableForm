@@ -10,8 +10,8 @@ namespace SamplePrintableForm.Data
       {
       }
 
-      public DbSet<Customer> Customer { get; set; }
-
-      public DbSet<Offer> Offer { get; set; }
+      public DbSet<Customer> Customers { get; set; }
+      public DbSet<Offer> Offers { get; set; }
+      public DbSet<Currency> Currencies { get; set; }
    }
 }

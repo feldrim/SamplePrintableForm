@@ -20,7 +20,7 @@ namespace SamplePrintableForm.Controllers
       // GET: Offers
       public async Task<IActionResult> Index()
       {
-         var appDbContext = _context.Offer.Include(o => o.Customer);
+         var appDbContext = _context.Offers.Include(o => o.Customer);
          return View(await appDbContext.ToListAsync());
       }
 
@@ -29,7 +29,7 @@ namespace SamplePrintableForm.Controllers
       {
          if (id == null) return NotFound();
 
-         var offer = await _context.Offer
+         var offer = await _context.Offers
             .Include(o => o.Customer)
             .SingleOrDefaultAsync(m => m.Id == id);
          if (offer == null) return NotFound();
@@ -40,7 +40,7 @@ namespace SamplePrintableForm.Controllers
       // GET: Offers/Create
       public IActionResult Create()
       {
-         ViewData["CustomerId"] = new SelectList(_context.Customer, "Id", "Email");
+         ViewData["CustomerId"] = new SelectList(_context.Customers, "Id", "Email");
          return View();
       }
 
@@ -59,7 +59,7 @@ namespace SamplePrintableForm.Controllers
             return RedirectToAction(nameof(Index));
          }
 
-         ViewData["CustomerId"] = new SelectList(_context.Customer, "Id", "Email", offer.CustomerId);
+         ViewData["CustomerId"] = new SelectList(_context.Customers, "Id", "Email", offer.CustomerId);
          return View(offer);
       }
 
@@ -68,9 +68,9 @@ namespace SamplePrintableForm.Controllers
       {
          if (id == null) return NotFound();
 
-         var offer = await _context.Offer.SingleOrDefaultAsync(m => m.Id == id);
+         var offer = await _context.Offers.SingleOrDefaultAsync(m => m.Id == id);
          if (offer == null) return NotFound();
-         ViewData["CustomerId"] = new SelectList(_context.Customer, "Id", "Email", offer.CustomerId);
+         ViewData["CustomerId"] = new SelectList(_context.Customers, "Id", "Email", offer.CustomerId);
          return View(offer);
       }
 
@@ -101,7 +101,7 @@ namespace SamplePrintableForm.Controllers
             return RedirectToAction(nameof(Index));
          }
 
-         ViewData["CustomerId"] = new SelectList(_context.Customer, "Id", "Email", offer.CustomerId);
+         ViewData["CustomerId"] = new SelectList(_context.Customers, "Id", "Email", offer.CustomerId);
          return View(offer);
       }
 
@@ -110,7 +110,7 @@ namespace SamplePrintableForm.Controllers
       {
          if (id == null) return NotFound();
 
-         var offer = await _context.Offer
+         var offer = await _context.Offers
             .Include(o => o.Customer)
             .SingleOrDefaultAsync(m => m.Id == id);
          if (offer == null) return NotFound();
@@ -124,15 +124,15 @@ namespace SamplePrintableForm.Controllers
       [ValidateAntiForgeryToken]
       public async Task<IActionResult> DeleteConfirmed(int id)
       {
-         var offer = await _context.Offer.SingleOrDefaultAsync(m => m.Id == id);
-         _context.Offer.Remove(offer);
+         var offer = await _context.Offers.SingleOrDefaultAsync(m => m.Id == id);
+         _context.Offers.Remove(offer);
          await _context.SaveChangesAsync();
          return RedirectToAction(nameof(Index));
       }
 
       private bool OfferExists(int id)
       {
-         return _context.Offer.Any(e => e.Id == id);
+         return _context.Offers.Any(e => e.Id == id);
       }
    }
 }

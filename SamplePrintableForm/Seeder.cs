@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using Bogus;
 using Bogus.DataSets;
 using Microsoft.Extensions.DependencyInjection;
@@ -15,6 +16,7 @@ namespace SamplePrintableForm
       private static AppDbContext _dbContext;
       private static List<Customer> _customers;
       private static List<Offer> _offers;
+      private static List<Currency> _currencies;
 
       public static ArrayList Errors { get; set; }
 
@@ -26,10 +28,31 @@ namespace SamplePrintableForm
 
          Errors = new ArrayList();
 
+         AddCurrencies();
          AddCustomers();
          AddOffers();
 
          DumpErrors();
+      }
+
+      private static void AddCurrencies()
+      {
+         _currencies = new List<Currency>
+         {
+            new Currency {Name = "Euro", Code = "EUR", Symbol = '€'},
+            new Currency {Name = "US Dollar", Code = "USD", Symbol = '$'},
+            new Currency {Name = "Turkish Lira", Code = "TRY", Symbol = '₺'},
+         };
+
+         try
+         {
+            _dbContext.Currencies.AddRange(_currencies);
+            _dbContext.SaveChanges();
+         }
+         catch (Exception e)
+         {
+            Errors.Add(e);
+         }
       }
 
       private static void AddCustomers()
@@ -49,7 +72,7 @@ namespace SamplePrintableForm
 
          try
          {
-            _dbContext.Customer.AddRange(_customers);
+            _dbContext.Customers.AddRange(_customers);
             _dbContext.SaveChanges();
          }
          catch (Exception e)
@@ -63,18 +86,18 @@ namespace SamplePrintableForm
          _offers = new Faker<Offer>()
             .RuleFor(o => o.Date, f => f.Date.Past())
             .RuleFor(o => o.Price, f => decimal.Parse(f.Commerce.Price(1750, 2750)))
-            .RuleFor(o => o.Currency, Currency.Euro)
-            .Generate(15);
+            .Generate(20);
 
          for (var i = 0; i < _offers.Count; i++)
          {
             _offers[i].Customer = _customers[i];
             _offers[i].CustomerId = _customers[i].Id;
+            _offers[i].Currency = _currencies.First(c => c.Code.Equals("EUR"));
          }
 
          try
          {
-            _dbContext.Offer.AddRange(_offers);
+            _dbContext.Offers.AddRange(_offers);
             _dbContext.SaveChanges();
          }
          catch (Exception e)

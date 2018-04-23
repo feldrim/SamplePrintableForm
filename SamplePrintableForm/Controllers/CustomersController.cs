@@ -19,7 +19,7 @@ namespace SamplePrintableForm.Controllers
       // GET: Customers
       public async Task<IActionResult> Index()
       {
-         return View(await _context.Customer.ToListAsync());
+         return View(await _context.Customers.ToListAsync());
       }
 
       // GET: Customers/Details/5
@@ -27,7 +27,7 @@ namespace SamplePrintableForm.Controllers
       {
          if (id == null) return NotFound();
 
-         var customer = await _context.Customer
+         var customer = await _context.Customers
             .SingleOrDefaultAsync(m => m.Id == id);
          if (customer == null) return NotFound();
 
@@ -63,7 +63,7 @@ namespace SamplePrintableForm.Controllers
       {
          if (id == null) return NotFound();
 
-         var customer = await _context.Customer.SingleOrDefaultAsync(m => m.Id == id);
+         var customer = await _context.Customers.SingleOrDefaultAsync(m => m.Id == id);
          if (customer == null) return NotFound();
          return View(customer);
       }
@@ -103,7 +103,7 @@ namespace SamplePrintableForm.Controllers
       {
          if (id == null) return NotFound();
 
-         var customer = await _context.Customer
+         var customer = await _context.Customers
             .SingleOrDefaultAsync(m => m.Id == id);
          if (customer == null) return NotFound();
 
@@ -116,15 +116,15 @@ namespace SamplePrintableForm.Controllers
       [ValidateAntiForgeryToken]
       public async Task<IActionResult> DeleteConfirmed(int id)
       {
-         var customer = await _context.Customer.SingleOrDefaultAsync(m => m.Id == id);
-         _context.Customer.Remove(customer);
+         var customer = await _context.Customers.SingleOrDefaultAsync(m => m.Id == id);
+         _context.Customers.Remove(customer);
          await _context.SaveChangesAsync();
          return RedirectToAction(nameof(Index));
       }
 
       private bool CustomerExists(int id)
       {
-         return _context.Customer.Any(e => e.Id == id);
+         return _context.Customers.Any(e => e.Id == id);
       }
    }
 }
