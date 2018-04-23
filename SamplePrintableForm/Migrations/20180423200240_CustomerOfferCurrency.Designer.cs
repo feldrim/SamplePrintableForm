@@ -5,15 +5,14 @@ using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage;
 using Microsoft.EntityFrameworkCore.Storage.Internal;
-using SamplePrintableForm.Models;
-using System;
 using SamplePrintableForm.Data;
+using System;
 
 namespace SamplePrintableForm.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20180421153935_CustomerAndOffer")]
-    partial class CustomerAndOffer
+    [Migration("20180423200240_CustomerOfferCurrency")]
+    partial class CustomerOfferCurrency
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -21,6 +20,27 @@ namespace SamplePrintableForm.Migrations
             modelBuilder
                 .HasAnnotation("ProductVersion", "2.0.2-rtm-10011")
                 .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+            modelBuilder.Entity("SamplePrintableForm.Models.Currency", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd();
+
+                    b.Property<string>("Code")
+                        .IsRequired()
+                        .HasMaxLength(3);
+
+                    b.Property<string>("Name")
+                        .IsRequired();
+
+                    b.Property<string>("Symbol")
+                        .IsRequired()
+                        .HasMaxLength(1);
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Currencies");
+                });
 
             modelBuilder.Entity("SamplePrintableForm.Models.Customer", b =>
                 {
@@ -46,7 +66,7 @@ namespace SamplePrintableForm.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Customer");
+                    b.ToTable("Customers");
                 });
 
             modelBuilder.Entity("SamplePrintableForm.Models.Offer", b =>
@@ -54,7 +74,7 @@ namespace SamplePrintableForm.Migrations
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd();
 
-                    b.Property<int>("Currency");
+                    b.Property<int>("CurrencyId");
 
                     b.Property<int>("CustomerId");
 
@@ -62,15 +82,24 @@ namespace SamplePrintableForm.Migrations
 
                     b.Property<decimal>("Price");
 
+                    b.Property<int>("Version");
+
                     b.HasKey("Id");
+
+                    b.HasIndex("CurrencyId");
 
                     b.HasIndex("CustomerId");
 
-                    b.ToTable("Offer");
+                    b.ToTable("Offers");
                 });
 
             modelBuilder.Entity("SamplePrintableForm.Models.Offer", b =>
                 {
+                    b.HasOne("SamplePrintableForm.Models.Currency", "Currency")
+                        .WithMany()
+                        .HasForeignKey("CurrencyId")
+                        .OnDelete(DeleteBehavior.Cascade);
+
                     b.HasOne("SamplePrintableForm.Models.Customer", "Customer")
                         .WithMany()
                         .HasForeignKey("CustomerId")

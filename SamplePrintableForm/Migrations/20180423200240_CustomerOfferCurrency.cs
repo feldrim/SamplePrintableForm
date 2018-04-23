@@ -5,12 +5,27 @@ using System.Collections.Generic;
 
 namespace SamplePrintableForm.Migrations
 {
-    public partial class CustomerAndOffer : Migration
+    public partial class CustomerOfferCurrency : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.CreateTable(
-                name: "Customer",
+                name: "Currencies",
+                columns: table => new
+                {
+                    Id = table.Column<int>(nullable: false)
+                        .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
+                    Code = table.Column<string>(maxLength: 3, nullable: false),
+                    Name = table.Column<string>(nullable: false),
+                    Symbol = table.Column<string>(maxLength: 1, nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Currencies", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Customers",
                 columns: table => new
                 {
                     Id = table.Column<int>(nullable: false)
@@ -23,44 +38,59 @@ namespace SamplePrintableForm.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Customer", x => x.Id);
+                    table.PrimaryKey("PK_Customers", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
-                name: "Offer",
+                name: "Offers",
                 columns: table => new
                 {
                     Id = table.Column<int>(nullable: false)
                         .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
-                    Currency = table.Column<int>(nullable: false),
+                    CurrencyId = table.Column<int>(nullable: false),
                     CustomerId = table.Column<int>(nullable: false),
                     Date = table.Column<DateTime>(nullable: false),
-                    Price = table.Column<decimal>(nullable: false)
+                    Price = table.Column<decimal>(nullable: false),
+                    Version = table.Column<int>(nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Offer", x => x.Id);
+                    table.PrimaryKey("PK_Offers", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_Offer_Customer_CustomerId",
+                        name: "FK_Offers_Currencies_CurrencyId",
+                        column: x => x.CurrencyId,
+                        principalTable: "Currencies",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_Offers_Customers_CustomerId",
                         column: x => x.CustomerId,
-                        principalTable: "Customer",
+                        principalTable: "Customers",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateIndex(
-                name: "IX_Offer_CustomerId",
-                table: "Offer",
+                name: "IX_Offers_CurrencyId",
+                table: "Offers",
+                column: "CurrencyId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Offers_CustomerId",
+                table: "Offers",
                 column: "CustomerId");
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable(
-                name: "Offer");
+                name: "Offers");
 
             migrationBuilder.DropTable(
-                name: "Customer");
+                name: "Currencies");
+
+            migrationBuilder.DropTable(
+                name: "Customers");
         }
     }
 }

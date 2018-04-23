@@ -5,6 +5,13 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="Migrations\20180423194208_AddedCurrencyLookup.cs" />
+    <Compile Remove="Migrations\20180423194208_AddedCurrencyLookup.Designer.cs" />
+    <Compile Remove="Migrations\20180423195707_CustomerOffeCurrency.cs" />
+    <Compile Remove="Migrations\20180423195707_CustomerOffeCurrency.Designer.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="Bogus" Version="22.0.8" />
     <PackageReference Include="Microsoft.AspNetCore.All" Version="2.0.7" />
     <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="2.0.3" />

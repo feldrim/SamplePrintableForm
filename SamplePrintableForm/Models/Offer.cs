@@ -11,6 +11,8 @@ namespace SamplePrintableForm.Models
 
       [Required] public Customer Customer { get; set; }
 
+      [Required] public int Version { get; set; }
+
       [Required] public DateTime Date { get; set; }
 
       [Required] public decimal Price { get; set; }

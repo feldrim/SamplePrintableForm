@@ -84,6 +84,7 @@ namespace SamplePrintableForm
       private static void AddOffers()
       {
          _offers = new Faker<Offer>()
+            .RuleFor(o => o.Version, f => 1)
             .RuleFor(o => o.Date, f => f.Date.Past())
             .RuleFor(o => o.Price, f => decimal.Parse(f.Commerce.Price(1750, 2750)))
             .Generate(20);
