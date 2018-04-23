@@ -23,7 +23,7 @@ namespace SamplePrintableForm
       public static void Initialize(IServiceProvider serviceProvider)
       {
          _dbContext = serviceProvider.GetRequiredService<AppDbContext>();
-         //_dbContext.Database.EnsureDeleted();
+         _dbContext.Database.EnsureDeleted();
          _dbContext.Database.EnsureCreated();
 
          Errors = new ArrayList();
@@ -94,6 +94,7 @@ namespace SamplePrintableForm
             _offers[i].Customer = _customers[i];
             _offers[i].CustomerId = _customers[i].Id;
             _offers[i].Currency = _currencies.First(c => c.Code.Equals("EUR"));
+            _offers[i].CurrencyId = _currencies.First(c => c.Code.Equals("EUR")).Id;
          }
 
          try
