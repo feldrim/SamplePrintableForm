@@ -21,7 +21,7 @@ namespace SamplePrintableForm
       public static void Initialize(IServiceProvider serviceProvider)
       {
          _dbContext = serviceProvider.GetRequiredService<AppDbContext>();
-         _dbContext.Database.EnsureDeleted();
+         //_dbContext.Database.EnsureDeleted();
          _dbContext.Database.EnsureCreated();
 
          Errors = new ArrayList();
