@@ -5,7 +5,7 @@ using System.Collections.Generic;
 
 namespace SamplePrintableForm.Migrations
 {
-    public partial class CustomerOfferCurrency : Migration
+    public partial class ReaddMigrations : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {

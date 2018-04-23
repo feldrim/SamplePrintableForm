@@ -11,8 +11,8 @@ using System;
 namespace SamplePrintableForm.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20180423200240_CustomerOfferCurrency")]
-    partial class CustomerOfferCurrency
+    [Migration("20180423203806_ReaddMigrations")]
+    partial class ReaddMigrations
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
